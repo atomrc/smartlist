@@ -1,0 +1,12 @@
+{
+    "name":"SmartList",
+    "developer": {
+        "name":"Thomas Belin",
+        "url":"http://github.com/ThomasBelin4"
+    },
+    "description":"",
+    "launch_path": "/index.html",
+    "icons":{
+        "128":"/resources/images/icon.png"
+    }
+}

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html data-ng-app="smartlist">
+    <head>
+        <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+        <title>SmartList</title>
+
+        <!--<link href="/resources/css/bootstrap.min.css" type="text/css" rel="stylesheet" >
+        <link href="/resources/css/font-awesome.min.css" type="text/css" rel="stylesheet" >-->
+        <link href="/resources/css/application.css" type="text/css" rel="stylesheet">
+
+        <script src="/resources/js/angular.min.js"></script>
+        <script src="/resources/js/globals.js"></script>
+        <script src="/resources/js/peg.min.js"></script>
+        <script src="/resources/js/application.js"></script>
+        <script src="/resources/js/main.js"></script>
+    </head>
+
+    <body data-ng-controller="appController">
+        <div data-ng-repeat="element in todoList">
+            <span
+                class="tip"
+                data-ng-click="validateTip(element.tip)"
+                data-ng-show="element.tip"
+                data-ng-bind="element.tip">
+            </span>
+            <input data-ng-model="element.fullText" data-grammar-listener="{ dest: element}">
+            <a data-ng-click="removeElement(element);">delete</a>
+            <br>
+        </div>
+        <button data-ng-click="addElement();"> FELIX </button>
+    </body>
+    <!--<script>
+
+    var gManifestName = "/manifest.webapp";
+
+    $(document).ready(function() {
+      var request = navigator.mozApps.getSelf();
+        request.onsuccess = function() {
+          if (request.result) {
+            // we're installed
+            $("#install_button").text("INSTALLED!").show();
+          } else {
+            // not installed
+            $("#install_button").show();
+                $("#install_button").click(function() {
+            var req = navigator.mozApps.install(gManifestName);
+            req.onsuccess = function() {
+                        $("#install_button").text("INSTALLED!").unbind('click');
+                    }
+            req.onerror = function(errObj) {
+                        alert("Couldn't install (" + errObj.code + ") " + errObj.message);
+                    }
+                });
+          }
+        }
+        request.onerror = function() {
+          alert('Error checking installation status: ' + this.error.message);
+        }
+    });
+
+    </script>-->
+
+</html>
