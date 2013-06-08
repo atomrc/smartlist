@@ -12,7 +12,7 @@ window.application = (function () {
         parser: [function () {
             var grammar = "START = VERB " +
                 "VERB = CALL { return 1; } / BUY { return 2; } " +
-                "CALL = 'appel'i[^ ]* / 'appe'i / 'app'i " +
+                "CALL = ('appel'i[^ ]* / 'appe'i / 'app'i) " +
                 "BUY = 'achet'i[^ ]* / 'ache'i / 'ach'i ",
                 parser = PEG.buildParser(grammar);
             return {
@@ -32,6 +32,23 @@ window.application = (function () {
     /*************** DIRECTIVES ***************/
     /***************************************/
     application.directives = {
+        dynamicList: [function () {
+            return {
+                restrict: 'A',
+                link: function (scope, element, attrs) {
+                    scope.$watch(attrs.dynamicList, function (newList, oldList, scope) {
+                        if (!newList) { return; }
+                        if (newList.length === 0) { newList.push({}); }
+                        var lastElement = newList[newList.length - 1];
+                        if (lastElement.fullText && lastElement.fullText.length > 0) {
+                            newList.push({});
+                        }
+
+                    }, true);
+                }
+            };
+        }],
+
         grammarListener: ['parser', function (parser) {
             return {
                 restrict: 'A',
