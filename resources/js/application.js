@@ -22,6 +22,17 @@ window.application = (function () {
             };
         }],
 
+        Action: [function () {
+            var Action = function (options) {
+                
+            };
+
+            Action.prototype = {
+            };
+
+            return Action;
+        }],
+
         parser: ['actionTypes', function (actionTypes) {
             var grammar = "START = CALL / BUY  " +
                 "CALL = verb:CALLVERB ' '? dest:(CALLDEST)? ' '? time:(CALLTIME)? { return {'type': " + JSON.stringify(actionTypes.call) + ", 'dest': dest, 'time': time}; } " +
@@ -30,6 +41,7 @@ window.application = (function () {
                 "CALLTIME = 'time' " +
                 "BUY = 'buyi'i[^ ]* / 'buy'i / 'bu'i ",
                 parser = PEG.buildParser(grammar);
+
             return {
                 parse: function (str) {
                     try {
@@ -37,6 +49,14 @@ window.application = (function () {
                     } catch (e) {
                         return null;
                     }
+                }
+            };
+        }],
+
+        actionRegisterer: [function () {
+            return {
+                register: function (action) {
+                    console.log('register :', action);
                 }
             };
         }]
@@ -71,8 +91,7 @@ window.application = (function () {
                     var destObj = scope.$eval(attrs.grammarListener).dest;
                     scope.$watch(attrs.ngModel, function (newValue, oldValue, scope) {
                         if (newValue) {
-                            destObj.tip = parser.parse(newValue);
-                            console.log(destObj.tip);
+                            destObj.action = parser.parse(newValue);
                         }
                     }, true);
                 }
@@ -94,6 +113,12 @@ window.application = (function () {
     };
 
     /***************************************/
+    /************* FILTERS **************/
+    /***************************************/
+    application.filters = {
+    };
+
+    /***************************************/
     /************* ANIMATIONS **************/
     /***************************************/
     application.animations = {
@@ -103,7 +128,7 @@ window.application = (function () {
     /*************** CONTROLLERS ***************/
     /***************************************/
     application.controllers = {
-        appController: ['$scope', function (scope) {
+        appController: ['$scope', 'actionRegisterer', function (scope, actionRegisterer) {
             scope.todos = [];
             scope.newTodos = [];
             scope.addElement = function () {
@@ -118,6 +143,7 @@ window.application = (function () {
                 if ((element.fullText || {}).length > 0) {
                     this.newTodos.removeElement(element);
                     this.todos.push(element);
+                    actionRegisterer.register(element.action);
                 }
             };
         }]

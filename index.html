@@ -4,8 +4,8 @@
         <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
         <title>SmartList</title>
 
-        <!--<link href="/resources/css/bootstrap.min.css" type="text/css" rel="stylesheet" >
-        <link href="/resources/css/font-awesome.min.css" type="text/css" rel="stylesheet" >-->
+        <link href="/resources/css/bootstrap.min.css" type="text/css" rel="stylesheet" >
+        <link href="/resources/css/font-awesome.min.css" type="text/css" rel="stylesheet" >
         <link href="/resources/css/application.css" type="text/css" rel="stylesheet">
 
         <script src="/resources/js/angular.min.js"></script>
@@ -16,19 +16,26 @@
     </head>
 
     <body data-ng-controller="appController" data-dynamic-list="newTodos">
+        <ul class="filters">
+            <li data-ng-show="todos.length > 0">all</li>
+            <li data-ng-show="(todos | filter:action.type.id === 0).length > 0">calls</li>
+            <li data-ng-show="(todos | filter:action.type.id === 1).length > 0">buys</li>
+        </ul>
         <div data-ng-repeat="element in todos">
             <span data-ng-bind="element.fullText"></span>
-            <a data-ng-click="deleteAction(element);">delete</a>
+            <a data-ng-click="deleteAction(element);"><i class="icon-trash"></i></a>
         </div>
         <div data-ng-repeat="element in newTodos">
-            <span
+            <div
                 class="tip"
-                data-ng-show="element.tip.type.humanPattern"
-                data-ng-bind="element.tip.type.humanPattern">
-            </span>
-            <input data-focusout="registerAction(element);" data-ng-model="element.fullText" data-grammar-listener="{ dest: element}">
+                data-ng-show="element.action.type.humanPattern"
+                data-ng-bind="element.action.type.humanPattern">
+            </div>
+            <form>
+                <input data-focusout="registerAction(element);" data-ng-model="element.fullText" data-grammar-listener="{ dest: element}">
+            </form>
         </div>
-        <button data-ng-click="addElement();"> FELIX </button>
+        <button data-ng-click="addElement();"><i class="icon-plus"></i> New </button>
     </body>
     <!--<script>
 
