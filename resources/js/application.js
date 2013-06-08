@@ -9,11 +9,26 @@ window.application = (function () {
     /*************** SERVICES ***************/
     /***************************************/
     application.services = {
-        parser: [function () {
-            var grammar = "START = VERB " +
-                "VERB = CALL { return 1; } / BUY { return 2; } " +
-                "CALL = ('appel'i[^ ]* / 'appe'i / 'app'i) " +
-                "BUY = 'achet'i[^ ]* / 'ache'i / 'ach'i ",
+        actionTypes: [function () {
+            return {
+                call: {
+                    id: 0,
+                    humanPattern: 'call <buddy> at <time>'
+                },
+                buy: {
+                    id: 1,
+                    humanPattern: 'buy <article>'
+                }
+            };
+        }],
+
+        parser: ['actionTypes', function (actionTypes) {
+            var grammar = "START = CALL / BUY  " +
+                "CALL = verb:CALLVERB ' '? dest:(CALLDEST)? ' '? time:(CALLTIME)? { return {'type': " + JSON.stringify(actionTypes.call) + ", 'dest': dest, 'time': time}; } " +
+                "CALLVERB = ('call'i[^ ]* / 'cal'i / 'ca'i) " +
+                "CALLDEST = first:([^ ]+) ' '? last:([^ ]*) { return [first.join(''), last.join('')] } " +
+                "CALLTIME = 'time' " +
+                "BUY = 'buyi'i[^ ]* / 'buy'i / 'bu'i ",
                 parser = PEG.buildParser(grammar);
             return {
                 parse: function (str) {
@@ -57,8 +72,22 @@ window.application = (function () {
                     scope.$watch(attrs.ngModel, function (newValue, oldValue, scope) {
                         if (newValue) {
                             destObj.tip = parser.parse(newValue);
+                            console.log(destObj.tip);
                         }
                     }, true);
+                }
+            };
+        }],
+
+        focusout: [function () {
+            return {
+                restrict: 'A',
+                link: function (scope, element, attrs) {
+                    element[0].addEventListener('focusout', function () {
+                        scope.$apply(function () {
+                            scope.$eval(attrs.focusout);
+                        });
+                    });
                 }
             };
         }]
@@ -75,16 +104,21 @@ window.application = (function () {
     /***************************************/
     application.controllers = {
         appController: ['$scope', function (scope) {
-            scope.todoList = [];
+            scope.todos = [];
+            scope.newTodos = [];
             scope.addElement = function () {
-                this.todoList.push({});
+                this.newTodos.push({});
             };
 
-            scope.removeElement = function (element) {
-                this.todoList.removeElement(element);
+            scope.deleteAction = function (element) {
+                this.todos.removeElement(element);
             };
 
-            scope.validateTip = function (tip) {
+            scope.registerAction = function (element) {
+                if ((element.fullText || {}).length > 0) {
+                    this.newTodos.removeElement(element);
+                    this.todos.push(element);
+                }
             };
         }]
     };

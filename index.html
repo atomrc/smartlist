@@ -15,17 +15,18 @@
         <script src="/resources/js/main.js"></script>
     </head>
 
-    <body data-ng-controller="appController" data-dynamic-list="todoList">
-        <div data-ng-repeat="element in todoList">
+    <body data-ng-controller="appController" data-dynamic-list="newTodos">
+        <div data-ng-repeat="element in todos">
+            <span data-ng-bind="element.fullText"></span>
+            <a data-ng-click="deleteAction(element);">delete</a>
+        </div>
+        <div data-ng-repeat="element in newTodos">
             <span
                 class="tip"
-                data-ng-click="validateTip(element.tip)"
-                data-ng-show="element.tip"
-                data-ng-bind="element.tip">
+                data-ng-show="element.tip.type.humanPattern"
+                data-ng-bind="element.tip.type.humanPattern">
             </span>
-            <input data-ng-model="element.fullText" data-grammar-listener="{ dest: element}">
-            <a data-ng-click="removeElement(element);">delete</a>
-            <br>
+            <input data-focusout="registerAction(element);" data-ng-model="element.fullText" data-grammar-listener="{ dest: element}">
         </div>
         <button data-ng-click="addElement();"> FELIX </button>
     </body>
