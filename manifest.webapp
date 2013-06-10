@@ -8,5 +8,12 @@
     "launch_path": "/index.html",
     "icons":{
         "128":"/resources/images/icon.png"
+    },
+    "type": "privileged",
+    "permissions": {
+      "contacts": {
+        "description": "Required for autocompletion in the share screen",
+        "access": "readonly"
+      }
     }
 }

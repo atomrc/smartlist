@@ -4,9 +4,11 @@
 }
 html, body { height: 100% }
 
-body { padding:0; margin:0; background:url('/resources/images/noise.png') #EEE; color:#666; font-family:Arial; }
+body { width: 90%; margin: auto; }
 
-h1, h2 { color:#F06; }
+body { padding:0; background:url('/resources/images/noise.png') #EEE; color:#666; font-family:Arial; }
+
+h1, h2 { color:#F06; text-align: center; }
 label { float:left; display:block; width:100px;  }
 fieldset {border: solid 1px #ccc; border-radius:3px; background-color:white; }
 legend { font-weight:bold; }
@@ -25,25 +27,34 @@ ul { list-style: none; padding:0; }
     .card { width: 20%; }
 }
 
+input { width: 95%; }
 input[type=submit], button, .button { border:solid #3079ED 1px; border-radius:3px; padding:5px; color:white; font-size:12pt; background:#4D90FE; cursor: pointer; }
 input[type=submit]:hover, button:hover, .button:hover { box-shadow: #666 0px 0px 7px inset; }
 input[type=submit]:active, button:active, .button:active { box-shadow: black 0px 0px 7px inset; }
 
+.filters { margin: 0; padding: 0; }
+.filters li { width: 100%; border-bottom: solid 1px gray; margin-bottom: 20px; }
+.filters li { float: left; width: 33%; }
+
 .tip {  }
+form { }
+form .span { margin: 0 }
+.suggestions { position: absolute; z-index: 10; background: rgba(255, 255, 255, 0.5); width: 60%; border: solid 1px #CCC; border-top: none; }
+.suggestions a { display: block; }
+
+.todo { padding: 0; }
 
 /************ANIMATIONS**********/
-.fade-enter, .fade-leave {
-     -webkit-transition: 5s all; /* Safari/Chrome */
-    -moz-transition: 5s all; /* Firefox */
-    -ms-transition: 5s all; /* IE10 */
-    -o-transition: 5s all; /* Opera */
-    transition: 5s all; /* Future Browsers */
-    position: absolute;
-    top: 0;
+.fadeup-show, .fadeup-leave {
+     -webkit-transition: 1s all; /* Safari/Chrome */
+    -moz-transition: 1s all; /* Firefox */
+    -ms-transition: 1s all; /* IE10 */
+    -o-transition: 1s all; /* Opera */
+    transition: 1s all; /* Future Browsers */
 }
-.fade-leave {
+.fadeup-show {
     opacity: 1;
 }
-.fade-leave-active {
+.fadeup-show-active {
     opacity: 0;
 }
